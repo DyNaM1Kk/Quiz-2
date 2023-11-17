@@ -9,8 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Dir2\" />
-    <Folder Include="Dir3\SubDir1\" />
+    <Folder Include="Topic 4\Dir2\" />
   </ItemGroup>
 
 </Project>

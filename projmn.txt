@@ -1,0 +1,55 @@
+using System;
+using System.Text;
+
+//stringBuider preference
+//diference
+
+
+StringBuilder newString = new StringBuilder("Bootcamp");
+
+//append method(to add)
+newString.Append(" / .NET");
+
+//appendLine method
+newString.AppendLine();
+
+//AppendFormat method
+newString.AppendFormat("     Name: {0}, Age: {1}", "mariami", 21);
+newString.AppendLine();
+newString.Append("studies at Caucasus University");
+
+
+//replace method 
+newString.Replace("studies at Caucasus University", "     Status:  student");
+newString.AppendLine();
+newString.Append('-', 15);
+
+//insert method
+newString.AppendLine();
+newString.Insert(86, " access code- NJJ78");
+
+newString.AppendLine();
+newString.Append("membership is valid until 18.12.24");
+newString.AppendLine();
+newString.Append("active");
+
+
+//Remove method ( student status is removed)
+newString.Remove(38, 50);
+
+
+
+// clear method 
+newString.Clear();
+
+//  combination of methods
+
+
+
+//StringBuilder anotherString = new StringBuilder("member info:");
+//anotherString.AppendLine().Append('-', 10).AppendLine().Append("name:").AppendLine().Append("surname:");
+
+
+
+Console.WriteLine(newString);
+//Console.WriteLine(anotherString);

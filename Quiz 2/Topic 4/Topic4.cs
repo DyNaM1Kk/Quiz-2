@@ -62,7 +62,7 @@ namespace Quiz2
                 var en = new UnicodeEncoding();
 
                 string? input = Console.ReadLine();
-                byte[] inputBytes = en.GetBytes(input);
+                byte[] inputBytes = input != null ? en.GetBytes(input) : [];
 
                 ms.Write(inputBytes);
                 ms.Seek(0, SeekOrigin.Begin);

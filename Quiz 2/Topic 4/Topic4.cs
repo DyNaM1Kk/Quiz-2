@@ -17,6 +17,36 @@ namespace Quiz2
             string file3 = Path.Join(Directory.GetCurrentDirectory(), "File1.txt");
             string file4 = Path.Join(Directory.GetCurrentDirectory(), "File2.txt");
 
+            var files1 = Directory.GetFiles(dir1);
+            foreach (string fileName in files1)
+            {
+                Console.WriteLine(fileName);
+                var fileInfo = new FileInfo(fileName);
+                using (StreamReader sr = fileInfo.OpenText())
+                {
+                    string? line = "";
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        Console.WriteLine(line);
+                    }
+                }
+                Console.WriteLine("Attributes: Creation time - {0}, Extension - {1}, Read only - {2}", fileInfo.CreationTime, fileInfo.Extension, fileInfo.IsReadOnly);
+            }
+            Console.ReadKey(true);
+
+            var files2 = Directory.EnumerateFiles(dir2, "*File2.txt");
+            foreach (string fileName in files2)
+            {
+                Console.WriteLine(fileName);
+            }
+            Console.ReadKey(true);
+
+            Directory.Move(dir4, dir2 + "Dir4");
+            Console.ReadKey(true);
+
+            CopyDirectory(dir3, dir2);
+            Console.ReadKey(true);
+
             if (!File.Exists(file3))
             {
                 using (StreamWriter sw = File.CreateText(file3))
@@ -37,6 +67,7 @@ namespace Quiz2
                     sw.Write(sw);
                 }
             }
+            Console.ReadKey(true);
 
             if (!File.Exists(file4))
             {
@@ -57,8 +88,15 @@ namespace Quiz2
                     }
                 }
             }
+            Console.ReadKey(true);
 
+            MemoryShowcase();
+        }
+
+        static void MemoryShowcase()
+        {
             var en = new UnicodeEncoding();
+
             using (MemoryStream ms = new MemoryStream())
             {
 
@@ -80,6 +118,8 @@ namespace Quiz2
                 en.GetDecoder().GetChars(bytes, 0, i, chars, 0);
                 Console.WriteLine(chars);
             }
+            Console.ReadKey(true);
+
             unsafe
             {
                 byte[] data = en.GetBytes("Some data to be stored in memory");
@@ -100,31 +140,6 @@ namespace Quiz2
 
                 Console.WriteLine(en.GetString(output));
             }
-
-            var files1 = Directory.GetFiles(dir1);
-            foreach (string fileName in files1)
-            {
-                Console.WriteLine(fileName);
-                var fileInfo = new FileInfo(fileName);
-                using (StreamReader sr = fileInfo.OpenText())
-                {
-                    string? line = "";
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        Console.WriteLine(line);
-                    }
-                }
-                Console.WriteLine("Attributes: Creation time - {0}, Extension - {1}, Read only - {2}", fileInfo.CreationTime, fileInfo.Extension, fileInfo.IsReadOnly);
-            }
-
-            var files2 = Directory.EnumerateFiles(dir2, "*File2.txt");
-            foreach (string fileName in files2)
-            {
-                Console.WriteLine(fileName);
-            }
-
-            //Directory.Move(dir4, dir2 + "Dir4");
-            //CopyDirectory(dir3, dir2);
         }
 
         static void CopyDirectory(string source, string dest)

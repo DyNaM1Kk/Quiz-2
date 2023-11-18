@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Runtime.InteropServices;
 
 namespace Quiz2
 {
@@ -57,9 +58,9 @@ namespace Quiz2
                 }
             }
 
+            var en = new UnicodeEncoding();
             using (MemoryStream ms = new MemoryStream())
             {
-                var en = new UnicodeEncoding();
 
                 string? input = Console.ReadLine();
                 byte[] inputBytes = input != null ? en.GetBytes(input) : [];
@@ -79,6 +80,26 @@ namespace Quiz2
                 en.GetDecoder().GetChars(bytes, 0, i, chars, 0);
                 Console.WriteLine(chars);
             }
+            unsafe
+            {
+                byte[] data = en.GetBytes("Some data to be stored in memory");
+                byte* dataPtr = (byte*)(Marshal.AllocHGlobal(data.Length)).ToPointer();
+
+                var writeStream = new UnmanagedMemoryStream(dataPtr, data.Length, data.Length, FileAccess.Write);
+                writeStream.Write(data, 0, data.Length);
+                writeStream.Close();
+
+                byte[] output = new byte[data.Length];
+
+                var readStream = new UnmanagedMemoryStream(dataPtr, data.Length, data.Length, FileAccess.Read);
+                readStream.Position = sizeof(char) * 26;
+                readStream.Read(output, 0, sizeof(char) * 6);
+                readStream.Close();
+
+                Marshal.FreeHGlobal((IntPtr)dataPtr);
+
+                Console.WriteLine(en.GetString(output));
+            }
 
             var files1 = Directory.GetFiles(dir1);
             foreach (string fileName in files1)
@@ -96,7 +117,7 @@ namespace Quiz2
                 Console.WriteLine("Attributes: Creation time - {0}, Extension - {1}, Read only - {2}", fileInfo.CreationTime, fileInfo.Extension, fileInfo.IsReadOnly);
             }
 
-            var files2 = Directory.EnumerateFiles(dir2, "*.txt");
+            var files2 = Directory.EnumerateFiles(dir2, "*File2.txt");
             foreach (string fileName in files2)
             {
                 Console.WriteLine(fileName);
